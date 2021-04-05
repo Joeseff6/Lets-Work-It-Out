@@ -1,3 +1,5 @@
+const API = require(`./api`);
+
 const workoutTypeSelect = document.querySelector("#type");
 const cardioForm = document.querySelector(".cardio-form");
 const resistanceForm = document.querySelector(".resistance-form");
@@ -13,6 +15,7 @@ const completeButton = document.querySelector("button.complete");
 const addButton = document.querySelector("button.add-another");
 const toast = document.querySelector("#toast");
 const newWorkout = document.querySelector(".new-workout")
+const API = require(`./api`)
 
 let workoutType = null;
 let shouldNavigateAway = false;
