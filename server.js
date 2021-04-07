@@ -19,7 +19,7 @@ app.use(express.static(`public`));
 
 mongoose.connect(process.env.MONGODB_URI || `mongodb://localhost/workout`, { useNewUrlParser: true });
 
-
+// GET routes to send user to file
 app.get(`/`, (req, res) => {
   res.sendFile(path.join(__dirname + `/public/html/index.html`));
 });
@@ -29,16 +29,50 @@ app.get(`/exercise`, (req, res) => {
 });
 
 app.get(`/stats`, (req, res) => {
-  db.Workout.find({}).populate(`exercises`)
-  .then(response => {
-    console.log(response)
-  })
   res.sendFile(path.join(__dirname + `/public/html/stats.html`));
 });
+// --------------------------------------------
 
-app.get(`/api/workouts/range`, (req,res) => {
+// API Routes
+app.get(`/api/workouts`, async (req,res) => {
+  try {
+    const lastWorkout = await db.Workout.find({});
+    res.status(200).json(lastWorkout);
+  } catch(err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+});
 
-})
+app.get(`/api/workouts/range`, async (req,res) => {
+  try {
+    
+  } catch(err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+});
+
+app.post(`/api/workouts`, async ({body},res) => {
+  try {
+    const newWorkout = await db.Workout.create(body);
+    res.status(200).json(newWorkout);
+  } catch(err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+});
+
+app.put(`/api/workouts/:id`, async (req,res) => {
+  try {
+    const id = req.params.id
+    const updateWorkout = await db.Workout.findByIdAndUpdate(id, { $push: {exercises: req.body} }, {new: true });
+    res.status(200).json(updateWorkout);
+  } catch(err) {
+    console.log(err);
+    res.status(500).json(err);
+  };
+});
 
 app.listen(PORT, () => {
   console.log(`App running on port ${PORT}!`);
