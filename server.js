@@ -2,7 +2,8 @@ const express = require(`express`);
 const logger = require(`morgan`);
 const mongoose = require(`mongoose`);
 const path = require(`path`);
-
+const date = new Date;
+const today =  `${date.getMonth()+1}/${date.getDay()}/${date.getFullYear()}`
 
 const PORT = process.env.PORT || 3000;
 
@@ -46,7 +47,14 @@ app.get(`/api/workouts`, async (req,res) => {
 
 app.get(`/api/workouts/range`, async (req,res) => {
   try {
-    
+    const aggregate = await db.Workout.aggregate([
+      {
+        $addFields: {
+          totalDuration: {$sum: "$exercises.duration"},
+        },
+      },
+    ]);
+    res.status(200).json(aggregate);
   } catch(err) {
     console.log(err);
     res.status(500).json(err);
@@ -56,6 +64,7 @@ app.get(`/api/workouts/range`, async (req,res) => {
 app.post(`/api/workouts`, async ({body},res) => {
   try {
     const newWorkout = await db.Workout.create(body);
+    newWorkout.date = today;
     res.status(200).json(newWorkout);
   } catch(err) {
     console.log(err);
