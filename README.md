@@ -37,7 +37,7 @@ That's where this application comes in! The user can create a new workout for th
 
 To install this application, you can clone this repo onto your local machine to obtain the necessary files. When not deployed to Heroku, this application uses MongoDB locally, in which the connection is already set up in the server.js file. No additional environment variables needed! MongoDB will need to be installed on your machine for this to work properly.
 
-Ensure to run `npm install` in your terminal so that you install the required packages. To seed your database with initial data, run `npm run seed` and 9 documents will be added to the collection.
+Ensure to run `npm install` in your terminal to install the required packages. To seed your database with initial data, run `npm run seed` and 9 documents will be added to the collection.
 
 ## Goals for Deployment
 
